@@ -1,6 +1,7 @@
 """Models for movie ratings app."""
 
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -17,6 +18,8 @@ class User(db.Model):
                         unique=True)
     password = db.Column(db.String,
                         nullable=False)
+
+    # ratings = a list of Rating objects
 
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
@@ -36,6 +39,10 @@ class Rating(db.Model):
     rating = db.Column(db.Integer,
                         nullable=False)
 
+    movie = db.relationship('Movie', backref='ratings')
+    user = db.relationship('User', backref='ratings')
+
+
     def __repr__(self):
         return f'<Rating rating_id={self.rating_id} movie_id={self.movie_id} rating={self.rating}>'
 
@@ -49,12 +56,14 @@ class Movie(db.Model):
                         primary_key=True)
     title = db.Column(db.String,
                         nullable=False)
-    description = db.Column(db.String)
-    rating_id = db.Column(db.Integer,
-                        db.ForeignKey('ratings.rating_id'))
+    description = db.Column(db.Text)
+    release_date = db.Column(db.DateTime)
+    poster_path = db.Column(db.String)
+
+    # ratings = a list of Rating objects
 
     def __repr__(self):
-        return f'<Rating rating_id={self.rating_id} movie_id={self.movie_id} rating={self.rating} title={self.title} description={self.description}>'
+        return f'<movie_id={self.movie_id} title={self.title} description={self.description}>'
 
 
 def connect_to_db(flask_app, db_uri='postgresql:///ratings', echo=True):
