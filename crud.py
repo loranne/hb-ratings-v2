@@ -44,3 +44,31 @@ def create_rating(user, movie, rating):
 
     return rating
 
+def get_movies():
+    """Return a list of all movies"""
+
+    movies = db.session.query(Movie).all()
+
+    return movies
+
+def get_movie_by_id(movie_id):
+    """Returns movie based on id"""
+
+    movie = Movie.query.get(movie_id)
+
+    return movie
+
+def get_users():
+    """Returns a list of all users"""
+
+    users = User.query.all()
+
+    return users
+
+def get_user_by_id(user_id):
+    """Returns user based on id"""
+
+    user = User.query.get(user_id)
+
+    return user
+
