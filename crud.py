@@ -15,9 +15,6 @@ def create_user(email, password):
 
     return user
 
-if __name__ == '__main__':
-    from server import app
-    connect_to_db(app)
 
 def create_movie(title, description, release_date, poster_path):
     """Create and return a new movie."""
@@ -72,3 +69,19 @@ def get_user_by_id(user_id):
 
     return user
 
+
+def get_user_by_email(email):
+    ''' return a user by email'''
+
+    return User.query.filter(User.email == email).first()
+
+
+def validate_user_password(password):
+    """checks for valid password on login"""
+
+    return User.query.filter(User.password == password).first()
+
+
+if __name__ == '__main__':
+    from server import app
+    connect_to_db(app)   
